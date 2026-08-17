@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+  <meta name="description" content="ONE SECOND — Hit the target. Don't trust your eyes."/>
+  <title>ONE SECOND</title>
+  <link rel="stylesheet" href="style.css"/>
+</head>
+<body>
+
+  <!-- START SCREEN -->
+  <div id="screen-start" class="screen active">
+    <div class="eyebrow">REFLEX CHALLENGE</div>
+    <h1 class="logo">ONE<br/>SECOND</h1>
+    <p class="tagline">Hit the target. Don't trust your eyes.</p>
+    <div class="score-row">
+      <div class="score-pill"><div class="sp-label">BEST</div><div class="sp-val" id="s-best">0</div></div>
+      <div class="score-pill"><div class="sp-label">ENDLESS</div><div class="sp-val" id="s-endless">0</div></div>
+    </div>
+    <div class="btn-row">
+      <button id="btn-play" class="btn btn-p">PLAY</button>
+      <button id="btn-endl" class="btn btn-s">ENDLESS</button>
+    </div>
+    <p class="smol">SPACE to start &middot; M to mute</p>
+    <button id="mute-s" class="mute-btn" title="Mute">🔊</button>
+  </div>
+
+  <!-- GAME SCREEN -->
+  <div id="screen-game" class="screen">
+    <div id="hud">
+      <div class="hcol"><div class="hv" id="h-score">0</div><div class="hl">SCORE</div></div>
+      <div class="hcol"><div class="hv" id="h-combo">x0</div><div class="hl">COMBO</div></div>
+      <div id="stage-lbl">STAGE 1</div>
+      <div class="hcol"><div class="hv" id="h-best">0</div><div class="hl">BEST</div></div>
+      <button id="mute-g" class="mute-btn" style="position:static;font-size:1rem;">🔊</button>
+    </div>
+    <div id="tbar-wrap"><div id="tbar"></div></div>
+    <canvas id="canvas"></canvas>
+    <div id="life-row"><span id="lives"></span></div>
+    <div id="endless-lbl" class="hidden">ENDLESS MODE</div>
+    <div id="combo-pop"></div>
+  </div>
+
+  <!-- RESULT SCREEN -->
+  <div id="screen-result" class="screen">
+    <p id="verdict"></p>
+    <p class="result-sub">RUN COMPLETE</p>
+    <div id="final-score">0</div>
+    <div class="sg">
+      <div class="st"><span class="sl">ACCURACY</span><span class="sv" id="r-acc">0%</span></div>
+      <div class="st"><span class="sl">AVG REACTION</span><span class="sv" id="r-avg">0ms</span></div>
+      <div class="st"><span class="sl">BEST REACTION</span><span class="sv" id="r-brt">—</span></div>
+      <div class="st"><span class="sl">BEST COMBO</span><span class="sv" id="r-bc">x0</span></div>
+      <div class="st"><span class="sl">STAGE</span><span class="sv" id="r-stg">1</span></div>
+      <div class="st"><span class="sl">PERSONAL BEST</span><span class="sv" id="r-pb">0</span></div>
+    </div>
+    <div id="new-best" class="hidden">⭐ NEW BEST!</div>
+    <div class="btn-row">
+      <button id="btn-again" class="btn btn-p">PLAY AGAIN</button>
+      <button id="btn-menu"  class="btn btn-s">MENU</button>
+    </div>
+  </div>
+
+  <script src="game.js"></script>
+</body>
+</html>

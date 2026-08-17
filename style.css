@@ -1,0 +1,152 @@
+﻿/* ONE SECOND - style.css */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@500;700&display=swap');
+
+:root {
+  --bg:  #060810;
+  --sur: #0f1520;
+  --bdr: rgba(56,189,248,0.12);
+  --blu: #38bdf8;
+  --cyn: #06ffd4;
+  --red: #ff3b5c;
+  --gld: #ffd700;
+  --grn: #00ff88;
+  --ora: #ff8c00;
+  --pur: #cc44ff;
+  --tx:  #b0c8e0;
+  --dim: #3a5068;
+  --wht: #ffffff;
+  --f1:  'Orbitron', 'Arial Black', monospace;
+  --f2:  'Rajdhani', system-ui, sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: var(--bg); color: var(--tx); font-family: var(--f2); touch-action: none; -webkit-tap-highlight-color: transparent; }
+
+/* ──────────────────── SCREENS ──────────────────── */
+/* The critical layout fix:
+   - .screen is fixed/full-screen but NOT flexed by default
+   - Start + Result screens: centered column
+   - Game screen: column stack (NOT centered) so canvas can fill height */
+.screen { position: fixed; inset: 0; z-index: 10; display: none; background: var(--bg); }
+.screen.active { display: flex; }
+
+#screen-start,
+#screen-result {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 24px;
+  text-align: center;
+  background: radial-gradient(ellipse 70% 50% at 50% 40%, rgba(56,189,248,0.06) 0%, transparent 70%);
+}
+
+/* Game screen: top-to-bottom column, NOT centered */
+#screen-game {
+  flex-direction: column;
+  align-items: stretch;
+  justify-content: flex-start;
+}
+
+/* ──────────────────── START SCREEN ──────────────── */
+.eyebrow { font-family: var(--f1); font-size: 0.55rem; letter-spacing: 0.35em; color: var(--cyn); }
+.logo    { font-family: var(--f1); font-size: clamp(2.8rem, 12vw, 5.5rem); font-weight: 900; color: var(--wht); line-height: 1.05; text-shadow: 0 0 40px rgba(56,189,248,0.5), 0 0 80px rgba(56,189,248,0.2); }
+.tagline { font-size: 0.88rem; color: var(--dim); letter-spacing: 0.08em; font-style: italic; }
+.smol    { font-size: 0.6rem; color: var(--dim); letter-spacing: 0.08em; }
+
+.score-row { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; }
+.score-pill { display: flex; flex-direction: column; align-items: center; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; padding: 10px 22px; min-width: 110px; }
+.sp-label { font-size: 0.5rem; letter-spacing: 0.15em; color: var(--dim); }
+.sp-val { font-family: var(--f1); font-size: 1.5rem; color: var(--blu); margin-top: 2px; }
+
+.btn-row { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; }
+.btn { font-family: var(--f1); font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; border: none; border-radius: 8px; padding: 13px 32px; cursor: pointer; transition: transform 0.12s, box-shadow 0.12s; }
+.btn:focus-visible { outline: 2px solid var(--cyn); outline-offset: 3px; }
+.btn:active { transform: scale(0.96) !important; }
+.btn-p { background: var(--blu); color: #000; box-shadow: 0 0 20px rgba(56,189,248,0.4); }
+.btn-p:hover { background: #5cd4ff; box-shadow: 0 0 30px rgba(56,189,248,0.65); transform: translateY(-2px); }
+.btn-s { background: var(--sur); color: var(--tx); border: 1px solid var(--bdr); }
+.btn-s:hover { border-color: var(--blu); color: var(--wht); transform: translateY(-2px); }
+
+.mute-btn { position: absolute; top: 14px; right: 14px; background: none; border: none; font-size: 1.2rem; cursor: pointer; padding: 6px 8px; border-radius: 6px; line-height: 1; }
+.mute-btn:focus-visible { outline: 2px solid var(--cyn); }
+.mute-btn:hover { transform: scale(1.15); }
+
+/* ──────────────────── HUD ──────────────────────── */
+#hud {
+  position: relative;
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 14px; gap: 6px;
+  background: rgba(6,8,16,0.92);
+  border-bottom: 1px solid var(--bdr);
+  flex-shrink: 0; z-index: 20;
+}
+.hcol { display: flex; flex-direction: column; align-items: center; min-width: 58px; }
+.hv { font-family: var(--f1); font-size: 1.1rem; font-weight: 700; color: var(--wht); }
+.hv.glow { color: var(--cyn); text-shadow: 0 0 10px var(--cyn); }
+.hl { font-size: 0.46rem; letter-spacing: 0.15em; color: var(--dim); margin-top: 1px; }
+
+#stage-lbl { font-family: var(--f1); font-size: 0.6rem; font-weight: 700; letter-spacing: 0.15em; color: var(--blu); background: rgba(56,189,248,0.08); border: 1px solid rgba(56,189,248,0.22); border-radius: 20px; padding: 3px 14px; }
+
+/* ──────────────────── TIMER BAR ────────────────── */
+#tbar-wrap { height: 5px; background: rgba(255,255,255,0.05); flex-shrink: 0; }
+#tbar { height: 100%; width: 100%; background: var(--cyn); transition: background 0.3s; }
+#tbar.warn { background: var(--ora); }
+#tbar.crit { background: var(--red); }
+
+/* ──────────────────── CANVAS ───────────────────── */
+#canvas { flex: 1; display: block; width: 100%; cursor: crosshair; }
+
+/* ──────────────────── LIFE ROW ─────────────────── */
+#life-row { padding: 4px 0 5px; text-align: center; flex-shrink: 0; min-height: 22px; }
+#lives { font-size: 1rem; letter-spacing: 4px; color: var(--red); }
+
+/* ──────────────────── ENDLESS LABEL ────────────── */
+#endless-lbl {
+  position: absolute; top: 54px; right: 12px; z-index: 25;
+  font-family: var(--f1); font-size: 0.52rem; letter-spacing: 0.18em; color: var(--pur);
+  background: rgba(204,68,255,0.08); border: 1px solid rgba(204,68,255,0.28); border-radius: 20px; padding: 2px 10px;
+}
+.hidden { display: none !important; }
+
+/* ──────────────────── COMBO POP ────────────────── */
+#combo-pop {
+  position: absolute; left: 50%; top: 50%; transform: translate(-50%,-50%);
+  font-family: var(--f1); font-weight: 900; font-size: clamp(2rem, 7vw, 3.5rem);
+  letter-spacing: 0.08em; pointer-events: none; z-index: 80; text-align: center;
+}
+.cpanim { animation: cpop 0.72s ease-out forwards; }
+@keyframes cpop {
+  0%  { opacity: 0; transform: scale(0.4); }
+  30% { opacity: 1; transform: scale(1.2); }
+  60% { opacity: 1; transform: scale(1.0); }
+  100%{ opacity: 0; transform: scale(0.85) translateY(-16px); }
+}
+
+/* ──────────────────── RESULT SCREEN ────────────── */
+.result-sub { font-family: var(--f1); font-size: 0.6rem; letter-spacing: 0.3em; color: var(--dim); font-weight: 400; }
+#verdict { font-family: var(--f1); font-size: clamp(0.65rem, 2.5vw, 0.88rem); letter-spacing: 0.1em; color: var(--cyn); font-style: italic; min-height: 1.3em; }
+#final-score { font-family: var(--f1); font-size: clamp(3rem, 13vw, 5.5rem); font-weight: 900; color: var(--wht); text-shadow: 0 0 30px rgba(56,189,248,0.4); line-height: 1; }
+.sg { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 18px; background: var(--sur); border: 1px solid var(--bdr); border-radius: 8px; padding: 14px 18px; width: 100%; max-width: 420px; }
+.st { display: flex; justify-content: space-between; gap: 8px; align-items: baseline; }
+.sl { font-size: 0.52rem; letter-spacing: 0.1em; color: var(--dim); }
+.sv { font-family: var(--f1); font-size: 0.88rem; color: var(--wht); }
+#new-best { font-family: var(--f1); font-size: 0.85rem; letter-spacing: 0.18em; color: var(--gld); animation: gblink 0.8s ease-in-out infinite alternate; }
+@keyframes gblink { from { opacity: 0.7; } to { opacity: 1; text-shadow: 0 0 18px var(--gld); } }
+
+/* ──────────────────── SHAKE ────────────────────── */
+@keyframes shake {
+  0%,100% { transform: none; }
+  20% { transform: translate(-6px,2px); } 40% { transform: translate(6px,-3px); }
+  60% { transform: translate(-4px,3px); } 80% { transform: translate(4px,-2px); }
+}
+.shaking { animation: shake 0.28s ease; }
+
+/* ──────────────────── STAGE FLASH ─────────────── */
+.sf { position: fixed; inset: 0; z-index: 500; pointer-events: none; display: flex; align-items: center; justify-content: center; animation: sfAnim 0.9s ease-out forwards; }
+@keyframes sfAnim { 0%{opacity:0;} 20%{opacity:1;} 70%{opacity:1;} 100%{opacity:0;} }
+.sf span { font-family: var(--f1); font-size: clamp(1.5rem, 6vw, 2.8rem); font-weight: 900; letter-spacing: 0.15em; color: var(--blu); text-shadow: 0 0 30px rgba(56,189,248,0.8); }
+
+/* ──────────────────── RESPONSIVE ──────────────── */
+@media (max-width: 480px) { .sg { grid-template-columns: 1fr; } }
+@media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; } }
