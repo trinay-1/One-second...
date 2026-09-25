@@ -521,19 +521,22 @@ function onMiss(mx, my) {
   snd('miss');
   updateHUD(); updateLives();
 }
-
 function onTimeout() {
   if (!G.roundActive) return;
   G.roundActive = false;
   targets.forEach(function(o){ o.gone = true; });
 
-  G.combo = 0; G.misses++;
-  snd('miss');
-  updateHUD(); updateLives();
+  var hasValid = targets.some(function(t){ return t.valid; });
+  if (hasValid) {
+    G.combo = 0; G.misses++;
+    snd('miss');
+    updateHUD(); updateLives();
 
-  if (G.endless) { endGame(); return; }
-  if (G.misses >= G.lives) { endGame(); return; }
-  setTimeout(spawnRound, 260);
+    if (G.endless) { endGame(); return; }
+    if (G.misses >= G.lives) { endGame(); return; }
+  }
+
+  setTimeout(spawnRound, 280);
 }
 
 // ── PARTICLES & FEEDBACK ─────────────────────────
